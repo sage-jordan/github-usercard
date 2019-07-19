@@ -8,7 +8,8 @@ import { create } from "domain";
 axios.get('https://api.github.com/users/sage-jordan')
   .then(response=>{
     console.log(response);
-    return createThisThing(response);
+    const cards = document.querySelectorAll('.cards');
+    cards.appendChild(createThisThing(response.data));
   })
   .catch(err=>{
     console.log(err);
@@ -34,8 +35,18 @@ axios.get('https://api.github.com/users/sage-jordan')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
-
+const followersArray = [tetondan, dustinmyers, justsml, luishrd, bigknell];
+followersArray.map((follower) => {
+  axios.get(`https://api.github.com/users/${follower}`)
+    .then(response=>{
+      console.log(response);
+      const person = createThisThing(response);
+      cards.appendChild(person);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  });
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -99,10 +110,3 @@ function createThisThing (obj) {
   bio.textContent = `Bio: ${obj.bio}`;
   cardInfo.appendChild(bio);
 }
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
